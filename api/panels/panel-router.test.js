@@ -20,19 +20,18 @@ describe(`[GET]'/api/panels/'`, () => {
                 panel_name: "Horrorific Beasts",
                 time: "5P",
                 date: "November 1"
-              },
-              {
+            },
+            {
                 panel_name: "Horror in Four Colors: Horror Comics",
                 time: "6P",
                 date: "November 1"
-              }
+            }
         ])
     })
 
     it('returns panels list', async () => {
         const response = await request(server).get('/api/panels')
         expect(response.status).toBe(200)
-        console.log(response.body)
         expect(response.body).toMatchObject([
             {
                 panel_name: "Horrorific Beasts",
@@ -51,4 +50,57 @@ describe(`[GET]'/api/panels/'`, () => {
         const response = await request(server).get('/api/panels')
         expect(response.body).toHaveLength(2)
     })
+})
+
+describe(`[POST] 'api/panels/'`, () => {
+
+    describe('[POST] creates successfully', () => {
+        it('returns the created panel data', async () => {
+            let postPanel = await request(server)
+                .post('/api/panels')
+                .send({
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                })
+            expect(postPanel.body).toMatchObject({
+                panel_name: "Horrorific Beasts",
+                time: "5P",
+                date: "November 1"
+            })
+
+            postPanel = await request(server)
+            .post('/api/panels')
+            .send({
+                panel_name: "Horror in Four Colors: Horror Comics",
+                    time: "6P",
+                    date: "November 1"
+            })
+            expect(postPanel.body).toMatchObject({
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
+                date: "November 1"
+            })
+        })
+        
+        it('creates a new panel in the database', async () => {
+            await request(server).post('/api/panels').send({
+                panel_name: "Horrorific Beasts",
+                time: "5P",
+                date: "November 1"
+            })
+            let panels = await db('panels')
+            expect(panels).toHaveLength(1)
+            await request(server).post('/api/panels').send({
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
+                date: "November 1"
+            })
+            panels = await db('panels')
+            expect(panels).toHaveLength(2)
+        })
+    })
+
+    
+    
 })
