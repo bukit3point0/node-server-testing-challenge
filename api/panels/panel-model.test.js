@@ -155,19 +155,19 @@ describe('Panels', () => {
             let panelArray = await db('panels')
             expect(panelArray).toHaveLength(2)
             expect(panelArray[1]).toMatchObject({
-                panel_name: "Horrorific Beasts",
-                time: "5P",
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
                 date: "November 1"
             })
         })
 
         it(`resolves to correct shape`, async () => {
             Panels.addPanel(
-                
-                panel_name: "Horror in Four Colors: Horror Comics",
-                time: "6P",
-                date: "November 1"
-            }
+                {
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    time: "6P",
+                    date: "November 1"
+                }
             )
             let panelArray = await db('panels')
             expect(panelArray).toHaveLength(2)
@@ -175,14 +175,14 @@ describe('Panels', () => {
                 {
                     panel_id: 1,
                     panel_name: "Horrorific Beasts",
-                    panel_description: "",
+                    panel_description: null,
                     time: "5P",
                     date: "November 1"
                 },
                 {
                     panel_id: 2,
                     panel_name: "Horror in Four Colors: Horror Comics",
-                    panel_description: "",
+                    panel_description: null,
                     time: "6P",
                     date: "November 1"
                 }
@@ -191,7 +191,30 @@ describe('Panels', () => {
     })
     
     describe(`remove()`, () => {
-        it.todo(`removes the panel successfully`)
-        it.todo(`displays proper response when no panel can be deleted`)
+        beforeEach(async () => {
+            await db('panels').insert([
+                {
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                },
+                {
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    time: "6P",
+                    date: "November 1"
+                }
+            ])
+        })
+        it(`removes the panel successfully`, async () => {
+            await Panels.remove(1)
+            let panelArray = await db('panels')
+            expect(panelArray).toHaveLength(1)
+        })
+
+        it(`displays proper response when no panel can be deleted`, async () => {
+            await Panels.remove(3)
+            let panelArray = await db('panels')
+            expect(panelArray).toHaveLength(2)
+        })
     })
 })

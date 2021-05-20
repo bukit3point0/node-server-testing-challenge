@@ -74,6 +74,7 @@ async function addCreator(creator) {
 }
 
 function remove(creator_id) {
+    console.log(`remove ${creator_id}`)
     return db('creators')
     .where({creator_id})
     .del()
