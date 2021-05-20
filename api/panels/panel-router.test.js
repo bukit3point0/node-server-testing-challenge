@@ -102,6 +102,8 @@ describe(`[POST] 'api/panels/'`, () => {
     })
 
     describe(`[POST] doesn't submit`, () => {
+        it.todo(`requires a name, date, and time`)
+
         it(`doesn't permit only a panel name`, async () => {
             let postPanel = await request(server)
                 .post('/api/panels')

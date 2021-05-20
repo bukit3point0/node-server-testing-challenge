@@ -1,4 +1,3 @@
-const { text } = require('express')
 const db = require('../../data/dbConfig')
 const Panels = require('./panels-model')
 

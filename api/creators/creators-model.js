@@ -14,12 +14,9 @@ async function findById(creator_id) {
     const creator = await db('creators as c')
     .leftJoin('creator_panels as crp', 'c.creator_id', 'crp.creator_id')
     .leftJoin('panels as p', 'crp.panel_id', 'p.panel_id')
-    // .leftJoin('moderators as m', 'c.creator_id', 'm.creator_id')
-    // .leftJoin('panels as ps', 'm.panel_id', 'ps.panel_id')
     .select(
         'c.*',
-        'p.panel_name',
-        // 'ps.panel_name as moderating'        
+        'p.panel_name'      
     )
     .where('c.creator_id', creator_id)
 
