@@ -165,9 +165,6 @@ describe(`[DELETE] 'api/panels/:panel_id'`, () => {
         it('requires an id number', async () => {
             let noId = await request(server).delete('/api/panels')
             expect(noId.status).toBe(404)
-            // let panels = await db('panels')
-            
-            // expect(panels).toHaveLength(2)
         })
         it('retains all panels if no or invalid id', async () => {
             await request(server).delete('/api/panels')
