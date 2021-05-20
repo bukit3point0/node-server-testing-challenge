@@ -131,5 +131,49 @@ describe(`[POST] 'api/panels/'`, () => {
 })
 
 describe(`[DELETE] 'api/panels/:panel_id'`, () => {
+    beforeEach(async () => {
+        await db('panels').insert([
+            {
+                panel_name: "Horrorific Beasts",
+                time: "5P",
+                date: "November 1"
+            },
+            {
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
+                date: "November 1"
+            }
+        ])
+    })
 
+    describe(`[DELETE] removes successfully`, () => {
+        it('deletes the panel', async () => {
+            await request(server).delete('/api/panels/1')
+            let panels = await db('panels')
+            expect(panels[0]).toMatchObject({
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
+                date: "November 1"
+            })
+            expect(panels).toHaveLength(1)
+        })
+    })
+
+    describe(`[DELETE] requires proper panel id to delete`, () => {
+        it('requires an id number', async () => {
+            let noId = await request(server).delete('/api/panels')
+            expect(noId.status).toBe(404)
+            // let panels = await db('panels')
+            
+            // expect(panels).toHaveLength(2)
+        })
+        it('retains all panels if no or invalid id', async () => {
+            await request(server).delete('/api/panels')
+            const panels = await db('panels')
+            expect(panels).toHaveLength(2)
+            await request(server).delete('/api/panels/3')
+            expect(panels).toHaveLength(2)
+        })
+    })
+    
 })
