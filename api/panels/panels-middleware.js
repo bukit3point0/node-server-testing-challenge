@@ -27,7 +27,7 @@ const confirmNewPanel = (req, res, next) => {
 
     Panels.findBy({panel_name})
     .then(([panel]) => {
-        console.log(panel)
+        // console.log(panel)
         if(panel) {
             res.status(422).json({
                 message: `Panel name ${panel_name} already exists`

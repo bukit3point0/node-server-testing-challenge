@@ -24,7 +24,7 @@ const confirmNewCreator = (req, res, next) => {
 
     Creators.findBy({creator_name})
     .then(([creator]) => {
-        console.log(creator)
+        // console.log(creator)
         if(creator) {
             res.status(422).json({
                 message: `Creator ${creator_name} already exists`

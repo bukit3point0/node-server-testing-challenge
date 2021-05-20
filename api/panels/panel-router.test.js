@@ -101,6 +101,35 @@ describe(`[POST] 'api/panels/'`, () => {
         })
     })
 
-    
-    
+    describe(`[POST] doesn't submit`, () => {
+        it(`doesn't permit only a panel name`, async () => {
+            let postPanel = await request(server)
+                .post('/api/panels')
+                .send({panel_name: "Horrorific Beasts"})
+            expect(postPanel.status).toBe(500)
+        })
+        
+        it(`will not repeat a panel name`, async () => {
+            await request(server)
+                .post('/api/panels')
+                .send({
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                })
+            let postPanel = await request(server)
+                .post('/api/panels')
+                .send({
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                })
+            expect(postPanel.status).toBe(422)
+        })
+    })
+ 
+})
+
+describe(`[DELETE] 'api/panels/:panel_id'`, () => {
+
 })
