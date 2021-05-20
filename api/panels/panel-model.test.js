@@ -87,13 +87,107 @@ describe('Panels', () => {
     })
     
     describe(`findById()`, () => {
-        it.todo(`displays proper panel by id`)
-        it.todo(`displays proper response when no panel_id found`)
+        beforeEach(async () => {
+            await db('panels').insert([
+                {
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                },
+                {
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    time: "6P",
+                    date: "November 1"
+                }
+            ])
+        })
+        it(`displays proper panel by id`, async () => {
+            let findPanel = await Panels.findById(1)
+            expect(findPanel).toMatchObject({
+                "1": {
+                    panel_id: 1,
+                    panel_name: "Horrorific Beasts",
+                    panel_description: null,
+                    panel_time: "5P",
+                    panel_date: "November 1",
+                    moderator: null,
+                    panelists: []
+                }
+            })
+            findPanel = await Panels.findById(2)
+            expect(findPanel).toMatchObject({
+                "2": {
+                    panel_id: 2,
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    panel_description: null,
+                    panel_time: "6P",
+                    panel_date: "November 1",
+                    moderator: null,
+                    panelists: []
+                }
+            })
+        })
+
+        it(`displays proper response when no panel_id found`, async () => {
+            let findPanel = await Panels.findById(3)
+            expect(findPanel).toMatchObject({})
+        })
     })
     
     describe(`addPanel()`, () => {
-        it.todo(`adds panel`)
-        it.todo(`resolves to correct shape`)
+        beforeEach(async () => {
+            await db('panels').insert(
+                {
+                    panel_name: "Horrorific Beasts",
+                    time: "5P",
+                    date: "November 1"
+                }
+            )
+        })
+        it(`adds panel`, async () => {
+            Panels.addPanel(
+                {
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    time: "6P",
+                    date: "November 1"
+                }
+            )
+            let panelArray = await db('panels')
+            expect(panelArray).toHaveLength(2)
+            expect(panelArray[1]).toMatchObject({
+                panel_name: "Horrorific Beasts",
+                time: "5P",
+                date: "November 1"
+            })
+        })
+
+        it(`resolves to correct shape`, async () => {
+            Panels.addPanel(
+                
+                panel_name: "Horror in Four Colors: Horror Comics",
+                time: "6P",
+                date: "November 1"
+            }
+            )
+            let panelArray = await db('panels')
+            expect(panelArray).toHaveLength(2)
+            expect(panelArray).toMatchObject([
+                {
+                    panel_id: 1,
+                    panel_name: "Horrorific Beasts",
+                    panel_description: "",
+                    time: "5P",
+                    date: "November 1"
+                },
+                {
+                    panel_id: 2,
+                    panel_name: "Horror in Four Colors: Horror Comics",
+                    panel_description: "",
+                    time: "6P",
+                    date: "November 1"
+                }
+            ])
+        })
     })
     
     describe(`remove()`, () => {
