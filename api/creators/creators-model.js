@@ -4,7 +4,7 @@ const findAll = () => {
     return db('creators')
 }
 
-async function findBy(filter) {
+async function findBy(filter) {    
     return db('creators')
     .where(filter)
     .orderBy('creator_id')
@@ -62,6 +62,8 @@ async function findById(creator_id) {
         return acc
         
     }, {})
+
+    // console.log(creatorPanels)
 
     return creatorPanels
 }
